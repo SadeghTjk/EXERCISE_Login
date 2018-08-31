@@ -19,29 +19,37 @@ public class loginActivity extends AppCompatActivity {
     String user = "sadegh";
     String pass = "123";
     SharedPreferences sp;
-    Intent login = new Intent(getApplicationContext(), SecActivity.class);
+    Intent login;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+         login = new Intent(getApplicationContext(), SecActivity.class);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         signin = findViewById(R.id.signin);
         wrong = findViewById(R.id.wrong);
         sp= getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
-        sp.edit().putBoolean("logged",false).apply();
 
-        if (sp.getBoolean("logged",true))
+        String usr = sp.getString("user","");
+        if(!usr.equals("") && usr.equals("sadegh")){
             startActivity(login);
+        }
+//        sp.edit().putBoolean("logged",false).apply();
+//
+//        if (sp.getBoolean("logged",true))
+//            startActivity(login);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                  if (username.getText().toString().equals(user) && password.getText().toString().equals(pass)) {
+                     sp.edit().putString("user","sadegh").apply();
                     startActivity(login);
-                    sp.edit().putBoolean("logged",true).apply();
+
+//                    sp.edit().putBoolean("logged",true).apply();
 
                 } else {
                     wrong.setText("Invalid Login Information");
