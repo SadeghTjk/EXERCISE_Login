@@ -1,6 +1,8 @@
 package com.example.shadow.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +18,9 @@ public class loginActivity extends AppCompatActivity {
     TextView wrong;
     String user = "sadegh";
     String pass = "123";
+    SharedPreferences sp;
+    Intent login = new Intent(getApplicationContext(), SecActivity.class);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,14 +29,20 @@ public class loginActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         signin = findViewById(R.id.signin);
         wrong = findViewById(R.id.wrong);
+        sp= getSharedPreferences("loginInfo", Context.MODE_PRIVATE);
+        sp.edit().putBoolean("logged",false).apply();
 
+        if (sp.getBoolean("logged",true))
+            startActivity(login);
 
         signin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (username.getText().toString().equals(user) && password.getText().toString().equals(pass)) {
-                    Intent login = new Intent(getApplicationContext(), SecActivity.class);
+
+                 if (username.getText().toString().equals(user) && password.getText().toString().equals(pass)) {
                     startActivity(login);
+                    sp.edit().putBoolean("logged",true).apply();
+
                 } else {
                     wrong.setText("Invalid Login Information");
                 }
